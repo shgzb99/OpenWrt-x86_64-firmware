@@ -1,0 +1,15 @@
+# This file is interpreted as shell script.
+# Put your custom iptables rules here, they will
+# be executed with each firewall (re-)start.
+
+# Internal uci firewall chains are flushed and recreated on reload, so
+# put custom rules into the root chains e.g. INPUT or FORWARD or into the
+# special user chains, e.g. input_wan_rule or postrouting_lan_rule.
+iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53
+iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53
+iptables -I FORWARD  -m mac --mac-source 2c:20:0b:1f:aa:7a -j DROP
+##iptables -I FORWARD  -p tcp -i eth0 -s 192.168.11.154 -m limit --limit=50/s --limit-burst=100 -j ACCEPT
+##iptables -I FORWARD  -p tcp -i eth0 -s 192.168.11.154 -j DROP
+##iptables -I FORWARD -d www.qq.com -j DROP
+##iptables -I FORWARD  -s 192.168.11.164 -j DROP
+##iptables -I FORWARD -d 111.48.69.72 -j DROP
